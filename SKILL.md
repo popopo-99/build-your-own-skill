@@ -62,6 +62,8 @@ description: Helps users turn professional experience, tacit knowledge, workflow
 - Output、Check、Repair、Tests；
 - 仅在任务确有分流时加入 Router；仅在确有需要时加入 Tools。
 
+设计时区分信息来源：**USER-DERIVED** 是用户明确提供的方法；**INFERRED** 是根据真实案例做出的合理推断；**PROPOSED** 是系统主动补充的架构或最佳实践。USER-DERIVED 可直接进入设计；重要的 INFERRED 要作为推断呈现；PROPOSED 若将成为 Hard Constraint、核心 Workflow、Router 或重要质量标准，必须先让用户知道它是系统建议。不要把 AI 的补充悄悄表述成用户原有方法。最终 Skill 不必保留这些标签。
+
 提取真实工作流程时阅读 [references/workflow-design.md](references/workflow-design.md)。区分通用知识与专业隐性知识时阅读 [references/knowledge-design.md](references/knowledge-design.md)。
 
 ### 4. Architecture：选择最小结构
@@ -76,11 +78,19 @@ description: Helps users turn professional experience, tacit knowledge, workflow
 
 ### 5. Build：生成可用文件
 
-获得足够信息只代表可以完成设计，不代表获得文件写入授权。只有用户明确要求 Build、创建或修改，并且当前工作目录或目标项目边界清晰时，才能执行写操作；不要求用户理解 YAML、Router 或脚本。
+#### Write Gate
 
-- 用户只是咨询、Discovery、Design 或 Review 时，不自动修改文件；交付分析、Canvas、Architecture 或 Build Proposal。
+Discovery、Design 和 Review 默认都是 READ / DESIGN 模式。获得足够信息、完成设计或提出下一步，都不构成文件写入授权。
+
+- 只有用户明确表达文件写入意图，并且当前工作目录或目标项目边界清晰时，才能进入 Build。例如：“构建 V0.1”“开始创建文件”“生成这个 Skill”“写入当前项目”“开始 Build”“按这个方案创建”。
+- “继续”“好”“可以”“下一步”“往下”“看看”“没问题”不得自动视为写入授权，也不能因为前文曾提示用户可以 Build 就推断授权。
+- 如果设计已经完成，但用户下一句话存在歧义，不写文件，只问：“设计已经完成。你希望我现在创建实际 Skill 文件，还是继续只做设计审阅？”
+- Write Gate 通过前，不得创建、修改、删除或打包任何用户文件；对已有项目同样适用。
 - 目标 repository 或文件范围不清晰时，先询问关键边界，或只提供 Build Proposal。
-- 当前环境支持文件创建和编辑，且写入条件满足时，可以创建或修改实际文件。
+
+#### 执行与降级
+
+- 当前环境支持文件创建和编辑，且 Write Gate 已通过时，可以创建或修改实际文件。
 - 当前环境不具备文件写入能力时，不得声称文件已经创建；应明确说明能力限制，输出建议文件树和所有必要文件的完整可复制内容。
 - 工具或写入能力不足时，说明真实限制和未完成事项，不伪装成功。
 - 修改已有项目时继续遵循 Minimum Change，只改为满足当前请求所必需的文件和模块。
@@ -115,7 +125,7 @@ description: Helps users turn professional experience, tacit knowledge, workflow
 
 - 用用户熟悉的职业语言解释，技术词第一次出现时用“中文（English）”。
 - 信息不足但不影响当前阶段时，标记假设并继续。
-- 信息已足够时主动向下一阶段推进。
+- 信息已足够时主动推进设计，但不得跨越 Write Gate；没有明确写入授权时停在设计交付或 Build Proposal。
 - 设计阶段交付 Skill Statement、Canvas 和 Build Proposal；构建阶段交付文件与验证结果。
 - 如果工具或文件读取失败，说明真实错误；不得伪装已成功。
 

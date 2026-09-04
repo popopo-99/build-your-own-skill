@@ -10,7 +10,7 @@ Build Your Own Skill 是一个帮助你从 0 制作自己 AI Skill 的 Skill。
 
 > 不要只教 AI 一句话。把你解决问题的方法，教给它。
 
-当前版本是 **V0.1.0**：第一版可测试的 Skill Builder。
+当前版本是 **V0.2.0**：第一版经过实机测试与关键安全修复的 Skill Builder。
 
 ## 它和 Prompt Generator 有什么不同？
 
