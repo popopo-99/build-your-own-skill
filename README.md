@@ -28,6 +28,18 @@ Build Your Own Skill 不会在你说“我想做一个 Skill”后立刻吐出�
 
 真正有价值的通常不是 AI 本来就知道的百科知识，而是你在实践中形成的方法。
 
+## 原来这些经验都可以做成 Skill
+
+Skill 不只属于程序员或 AIGC 创作者。只要一项工作反复发生，而且你已经会判断例外、风险和取舍，就可能值得整理：
+
+| 职业起点 | 原本的问题 → 最后提取出的 Skill |
+| --- | --- |
+| 视觉设计师 | 不知道什么值得做 → [从模糊活动 Brief 中提取“活动创意方向推导”](case-studies/04-visual-designer-discovery/) |
+| AIGC 短剧导演 | 会拆镜但说不清方法 → [把导演判断整理成可制作镜头拆解规则](case-studies/05-aigc-director-experience/) |
+| 咖啡店店长 | 每天凭经验备货排班 → [把异常、补救成本与岗位瓶颈变成判断流程](case-studies/06-cafe-manager-experience/) |
+
+这些是基于真实运行过程整理的教学案例；场景材料经过匿名化、改写或复合设计。它们展示如何提取方法，不是职业效果验证报告。
+
 ## 3 分钟安装并开始
 
 ### 1. 在 Codex 中安装
@@ -72,7 +84,7 @@ $build-your-own-skill
 
 > 不需要提前整理成标准格式。真实案例、旧 Prompt、SOP 或现有 Skill 都可以直接作为起点。
 
-这三个案例均来自 Build Your Own Skill 的真实实机测试，不是为了教程临时编造的虚拟 Persona。
+上表 Case 01–03 均来自 Build Your Own Skill 的真实实机测试，不是为了教程临时拼出的流程。另有三个跨行业教程采用真实 Runtime 交互过程，并对职业场景和细节做了匿名化、改写或教学化处理；两组案例的定位见 [`case-studies/`](case-studies/)。
 
 ## 安装后，第一句话怎么说
 
@@ -110,6 +122,14 @@ $build-your-own-skill
 [粘贴 SKILL.md]
 ```
 
+### 当你自己也不知道需求是什么
+
+可以说：“多问我，帮我把这个 Skill 真正想清楚。”它会进入 [Deep Discovery（深度发现）](references/deep-discovery.md)，逐步澄清会改变设计的关键决策；普通请求仍默认 Quick Discovery，每轮只问 1–3 个问题。
+
+### Skill 做完后，怎么知道它真的有用？
+
+可以说：“帮我验证这个 Skill 是否真的减少返工。”通过 [Comparative Evaluation（比较评测）](references/evaluation.md)，用相同真实任务比较 With Skill 与 Without Skill；升级时比较新版与旧版。通常从 2–3 个任务开始，无法实际运行会明确说明，不把计划当成结果。
+
 ## 谁适合使用？
 
 设计师、摄影师、导演、艺术家、创作者、文案、运营、产品经理、品牌从业者、HR、顾问、教师、研究者、程序员，以及任何拥有可复用经验的人。
@@ -127,7 +147,7 @@ $build-your-own-skill
 5. **Workflow & Knowledge**：提取你真实的步骤、分支、失败经验和质量标准。
 6. **Architecture**：只选择当前真正需要的文件和工具。
 7. **Build**：生成可用的 `SKILL.md` 与必要支持文件。
-8. **Test & Repair**：用正常、缺失、冲突和失败场景验证，再针对根因修复。
+8. **Test / Evaluate / Repair**：先验证行为；需要判断增益时再比较结果，针对根因修复并重测，不强制完整 Benchmark。
 9. **V0.1**：得到可以继续真实使用和升级的第一版。
 
 系统会尽量从已有对话推断信息，每轮只问少量会实质改变结果的问题；信息足够后主动推进，不要求你把 Canvas 当申请表填写。
@@ -154,15 +174,20 @@ build-your-own-skill/
 ├── README.md
 ├── INSTALL.md
 ├── CHANGELOG.md
+├── LICENSE
+├── COMMONS-CLAUSE.md
+├── NOTICE
 ├── AGENTS.md
 ├── references/
 │   ├── discovery.md
+│   ├── deep-discovery.md
 │   ├── skill-design.md
 │   ├── skill-canvas.md
 │   ├── workflow-design.md
 │   ├── knowledge-design.md
 │   ├── architecture.md
 │   ├── testing.md
+│   ├── evaluation.md
 │   ├── debugging.md
 │   └── publishing.md
 ├── templates/
@@ -177,16 +202,19 @@ build-your-own-skill/
 │   ├── README.md
 │   ├── 01-experience-to-skill/
 │   ├── 02-prompt-to-skill/
-│   └── 03-review-and-repair/
+│   ├── 03-review-and-repair/
+│   ├── 04-visual-designer-discovery/
+│   ├── 05-aigc-director-experience/
+│   └── 06-cafe-manager-experience/
 └── tests/
     └── cases.md
 ```
 
 - `SKILL.md` 是精简的编排层，识别用户阶段并决定何时读取详细资料。
-- `references/` 保存 Discovery、设计、架构、测试和诊断方法。
+- `references/` 保存 Quick / Deep Discovery、设计、架构、行为测试、效果评测和诊断方法。
 - `templates/` 提供可以复制并按真实经验改写的起点。
 - `examples/` 展示最终 Skill 的结构示例。
-- `case-studies/` 展示真实用户从起点到发现、设计、构建或修复 Skill 的过程。
+- `case-studies/` 展示经过说明的实机测试与教学演示，重点是从起点到发现、设计、构建或修复 Skill 的方法提取过程。
 - `tests/` 描述 Skill 自身应通过的行为场景。
 
 ## 推荐阅读
@@ -207,7 +235,7 @@ build-your-own-skill/
 - 不断追加 Prompt 不是调试；先定位 Trigger、Workflow、Knowledge、Constraint 或 Output。
 - 从 V0.1 开始，不在第一天假装已经是 V1.0。
 
-## 开源与二次创作
+## 公开源码与二次创作
 
 我们鼓励真正的学习与扩展：
 
@@ -215,12 +243,60 @@ build-your-own-skill/
 
 基于其他项目创建 Skill 时，请查看原项目 License，保留必要 Attribution，说明来源和修改，并遵守原 License。不要把改名字、换 Logo 当成真正的二次创作。
 
+## Inspirations / References
+
+V0.3 的 Deep Discovery 与 Evaluation 设计参考了以下工作的部分思想：
+
+- [Anthropic — Skill Creator](https://github.com/anthropics/claude-plugins-official/blob/main/plugins/skill-creator/skills/skill-creator/SKILL.md)：意图提取、基线比较与反馈迭代。
+- Matt Pocock — [grill-me](https://www.aihero.dev/skills-grill-me) / [grilling](https://github.com/mattpocock/skills/blob/main/docs/productivity/grilling.md)：按前置决策推进追问，以及识别需要研究或原型而非继续谈话的问题。
+
+Build Your Own Skill 是独立实现，未将第三方 Skill 作为运行时依赖，也未复制其专属工具链。这些来源是设计启发，不代表联合开发。
+
 ## Version
 
-当前版本：**V0.2.0**
+当前版本：**V0.3.0**
+
+V0.3.0 带来更深入的经验发现（Deep Discovery）、重视证据的比较评测（Comparative Evaluation）与跨行业教学案例：先搞清楚值得做什么，再验证 Skill 是否真正增加能力。
 
 版本记录见 [`CHANGELOG.md`](CHANGELOG.md)。
 
 ## License
 
-本仓库当前尚未设置 License，需要项目作者决定。缺少 License 不等于自动获得任意复制、修改或再发布许可。
+Build Your Own Skill is licensed under:
+
+**Apache License 2.0 with the Commons Clause License Condition v1.0.**
+
+正式文本见 [LICENSE](LICENSE)、[COMMONS-CLAUSE.md](COMMONS-CLAUSE.md)，项目来源信息见 [NOTICE](NOTICE)。这是公开源码、可学习和扩展的 **source-available** 项目；加入 Commons Clause 后，不属于 OSI 定义的开源软件。
+
+### 你可以做什么
+
+在遵守上述许可的前提下，你可以免费学习、使用、修改、Fork 本项目，分享合规的二次创作，也可以在公司内部或个人、商业工作中使用它。
+
+例如：咖啡店用它整理运营方法，导演用它梳理商业短剧流程，设计师或顾问用它服务客户；你也可以基于自己的专业经验制作独立 Skill，并使用它承接商业项目。
+
+### 使用工具创造自己的内容
+
+使用本工具创建出的独立 Skill，不会仅因为使用了 Build Your Own Skill 就自动成为本项目的衍生版本。
+
+如果你没有复制、修改或重新分发本项目本身的受保护内容，而是在整理自己的经验、SOP、Workflow 或专业内容，通常不要求在最终 Skill 或作品中写“Created by ZY”或“Based on Build Your Own Skill”。本项目许可不会仅因使用工具就要求你转让独立内容的权利；你仍需遵守所用其他材料的权利与许可。
+
+你可以出售由自己专业经验形成的独立 Skill，前提是它不是在重新出售本工具，也不是下述价值全部或实质上来自本工具功能的产品或服务。
+
+### 需要保留来源的情况
+
+如果你 Fork、修改并重新发布 Build Your Own Skill，或复制其 `SKILL.md`、references、templates 等受保护内容形成衍生版，包括在此基础上继续开发另一个 Skill Builder，应按正式许可：
+
+- 随再分发提供适用的 Apache License 与 Commons Clause 条件文本；
+- 保留适用的版权和来源声明，以及 NOTICE 中的原项目名称、作者和仓库链接；NOTICE 的适用声明可按 Apache 2.0 第 4(d) 条保留在 NOTICE 文件、随附源码或文档等允许的位置；
+- 在修改过的文件中清楚标明修改，不把衍生版冒充为原作者官方版本；
+- 同时遵守 Commons Clause 的销售限制。
+
+这里涉及的是对本项目受保护内容的复制、修改与再分发，不是把通用方法、想法或独立经验一概视为本项目的专有内容。
+
+### 商业边界
+
+可以“用这个工具开展商业工作”；限制的是“把这个工具本身拿去卖”，以及向第三方收取费用或其他对价，提供价值全部或实质上来自本工具功能的产品或服务。
+
+仅改名、换 Logo、少量 Prompt 改写或轻微包装，再作为收费 Skill Builder 出售，不能绕过该限制。它也涉及符合上述价值来源条件的托管服务，以及与本工具相关的收费咨询或支持服务；并非禁止所有商业使用或所有咨询服务。
+
+以上是便于理解的说明，不是新增许可证条款。最终授权以 [LICENSE](LICENSE) 和 [COMMONS-CLAUSE.md](COMMONS-CLAUSE.md) 为准，并按许可保留 [NOTICE](NOTICE) 中的适用来源信息；NOTICE 仅用于信息与署名说明，不修改许可，README 也不覆盖正式法律文本。

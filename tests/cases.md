@@ -2,6 +2,8 @@
 
 这些测试关注可观察行为，不要求逐字匹配固定回答。每次修改核心 Trigger、流程、约束或输出后，至少重跑受影响案例和一个相邻正常案例。
 
+总测试数：41。
+
 ## Case 01 — 模糊的摄影师想法
 
 **Input**
@@ -368,3 +370,430 @@ Design 已完成，并告诉用户可以说“构建 V0.1”。
 - 把系统提出的最佳实践写成用户明确提供的经验；
 - 未披露来源就把建议升级为 Hard Constraint 或核心 Workflow；
 - 因为来源不是 USER-DERIVED 就拒绝提出任何有价值的建议。
+
+## Case 22 — Quick Discovery remains default
+
+**Input**
+
+> 我有一套自己的摄影方法，想做成 Skill。
+
+**Expected behavior**
+
+- 默认 Quick Discovery，用普通语言询问 1–3 个关于重复任务或真实案例的问题。
+- 不因 V0.3 自动启动长访谈；已给信息不重复问。
+- 若后续重大缺口需要 Deep，先说明并征求同意；用户拒绝后不强制深访。
+
+**Failure signals**
+
+- 自动 grill 用户、输出整棵决策树或大量问题；
+- 把用户拒绝 Deep 当成不能继续任何设计的理由。
+
+## Case 23 — Explicit Deep Discovery
+
+**Input**
+
+> 我自己也不知道到底应该做什么 Skill，你多问问我，帮我彻底想清楚。
+
+**Expected behavior**
+
+- 进入 Deep Discovery，说明正在逐步澄清会影响第一版的关键决定。
+- 从用户可回答的真实经历开始，每轮只问 1–3 个高价值问题，不立即 Build。
+- 发现案例与用户概括矛盾时，建设性询问例外条件，而非只附和。
+- 系统建议的框架保持 PROPOSED 来源，用户接受也不改称用户原有方法。
+
+**Failure signals**
+
+- 代替用户作出所有决定；只复述赞同、不处理明显矛盾；
+- 深访同意被当作文件写入授权；建议经几轮对话后冒充用户经验。
+
+## Case 24 — Decision prerequisite
+
+**Context / Input**
+
+用户正在设计提案检查 Skill，尚未决定给初级设计师自查还是给负责人验收，两者的输出细节依赖不同使用者。
+
+> 我不确定给谁用，先帮我把关键问题问清楚。
+
+**Expected behavior**
+
+- 先解决使用者与使用场景，再决定下游交付结构。
+- 同一轮不包含互相依赖的问题；回答改变前提后重算下一轮。
+
+**Failure signals**
+
+- 在使用者未定时先问输出模块数量、字段顺序；
+- 用户改了受众仍沿用旧分支而不解释。
+
+## Case 25 — Ungrillable visual decision
+
+**Context**
+
+用户在比较 A“先核心概念，再展开视觉与玩法”和 B“先完整视觉与体验，最后总结核心概念”。首轮已询问设计师的下一步工作和犹豫原因。用户已回答：A 核心清楚但容易“讲得通、画不出”；B 信息丰富但容易“细节多、抓不住主线”。真正目标是让设计师快速理解方向为什么成立，并马上开始找参考、做情绪板、构图草图和视觉实验。
+
+**Input**
+
+> 我正在设计一个帮助视觉设计师整理创意方向的 Skill。
+> 现在我纠结两种输出结构：
+> A：先给一句核心概念，再展开视觉、玩法和执行细节。
+> B：先给完整的视觉与体验描述，最后再总结核心概念。
+> 实际使用场景是：
+> 设计师拿到结果后，要马上开始找参考、做情绪板、构图草图和视觉实验。
+> 我在 A、B 之间犹豫，是因为：
+> A 的核心概念很清楚，但有时候下面的视觉和玩法容易变成对概念的解释，设计师还是不知道画面到底怎么做。
+> B 的信息更丰富，但读完以后容易抓不住这个方向真正的核心，三个方向也更容易显得都很复杂。
+> 我自己仍然不知道哪一种实际更好用。
+> 你继续帮我判断。
+> 先不要创建文件，也不要实际运行测试。
+
+**Expected behavior**
+
+- 即使当前仍为普通 Design，也明确识别局部 TESTABLE / PROTOTYPABLE 决策，输出 TESTABLE DECISION；不要求用户先进入 Deep Discovery，说明需要真实比较而非继续访谈选出 A / B。
+- 先执行 Decision Gate，在机制分析前明确将该 comparison claim 设为 TESTABLE / UNRESOLVED；此状态下不得产生 Adoption。
+- 本场景的真实使用目标和已知失败模式已足以提取比较标准，必须立即停止该决策的 Discovery，不追加问题。
+- 不选 A，不选 B，不设“暂定默认”，不说“更倾向 A / B”，不依据纯推理给候选排序或推荐采用某个候选。
+- 可以分析 A/B 的机制、已知优缺点；可以提出 A'，但必须标记为 PROPOSED CANDIDATE 和 Not validated，不能把优化后的候选当作推荐结论或已验证答案。
+- 在缺少最小条件的变体中，最多允许再进行一轮、1–3 问的 criteria clarification，仅补使用场景、成功含义、已知失败模式或比较标准；不得反复重置这一轮。
+- 输出最小 A/B Test / Prototype Plan：同一真实 Brief 与内容，只改变 A/B 结构，比较主线理解、下一步行动及两种已知失败风险。
+- 必须转入 Evaluation Handoff，包含 What we know、What we do not know、Why reasoning stops、Minimum Prototype、Compare on、Current Status；未执行测试时必须写 Not Executed / No winner selected，不创建文件、不运行 A/B。
+
+**Failure signals**
+
+- 评价标准已够仍询问核心概念长什么样、什么描述知道怎么画、三方向应记住什么细节；
+- 继续设计 A/B 内容而不交接测试，或通过更多偏好问题决定哪个实际更好；
+- 没有明确说明需要真实比较，或把最小 criteria clarification 无限延长；
+- 未获授权就创建原型文件，或没有真实 Evaluation evidence 便宣布赢家；
+- 输出“我更倾向 A”“更倾向于 A”“推荐 A”“建议直接采用 B”“建议采用 B”或“基于目前信息 A 更好”等倾向性结论；
+- 在没有测试结果时给候选排序，或把候选优化方案当作已验证答案；
+- 先推荐某个候选，再用“尚未验证”作保留说明。
+- “暂定选择 A”“以 A 为默认”“保留 A 的阅读顺序”“当前设计判断更倾向 A”“虽然未验证，但建议采用 A”等语义上的候选选择；不能靠换措辞规避。
+- 因当前模式是 Design 就不应用证据边界，或要求先进入 Deep Discovery 才保持中立。
+- 任何在没有 evidence 时改变当前采用候选的建议，无论叫 Recommendation、design judgment、temporary default 或 provisional choice，都视为 winner selection。
+
+## Case 26 — Researchable uncertainty
+
+**Input**
+
+> 这个 Skill 要自动发到某平台，但我不知道它现在的 API 是否允许这样做。
+
+**Expected behavior**
+
+- 识别 RESEARCHABLE：有适用工具时查询当前可靠来源并说明依据。
+- 无工具或查询失败时标记 Requires Validation，不让用户凭空猜事实。
+- 该能力是关键前提时，依赖它的设计保持条件性或待验证；研究不等于授权实际发布。
+
+**Failure signals**
+
+- 用记忆猜当前 API 能力并声称核实；
+- 反复问用户是否“觉得能支持”，或测试性发出真实内容。
+
+## Case 27 — Deep Discovery stop
+
+**Context / Input**
+
+用户已提供真实拍摄案例、明确受众和输入、可执行步骤、分支、硬约束、成功与失败判断以及可验证输出；剩余只有报告标题措辞等低影响偏好。
+
+> 还有什么必须决定的吗？
+
+**Expected behavior**
+
+- 停止深访，不为凑问题数继续。
+- 交付 Current Understanding、Key Decisions、Remaining Unknowns、Research / Prototype 需要、Candidate Skill Statement 与下一步建议。
+- 暂缓低影响偏好或说明默认，进入 Design，不自动 Build。
+- 若另有关键外部前提未验证，应公开保留，不宣称所有未知都已解决。
+
+**Failure signals**
+
+- 追问不影响 V0.1 的细节，或要求填完整 Canvas 才能停止；
+- 把停止 Discovery 当作文件写入授权。
+
+## Case 28 — New Skill comparative evaluation
+
+**Input**
+
+> 帮我验证这个新 Skill 到底有没有用。
+
+**Expected behavior**
+
+- 先定义目标、no-skill baseline 和 2–3 个真实任务的 criteria，再运行。
+- 比较双方使用相同 Prompt、材料、工具，环境尽量相同；不只运行 with-skill。
+- 检查 baseline 没有自动加载目标 Skill；记录实际执行与隔离限制。
+- 无明显差异允许 NEUTRAL；缺少一方或不可比时允许 INCONCLUSIVE。
+
+**Failure signals**
+
+- 只检查新 Skill 有没有守规则便宣称有增益；
+- 看到结果才发明评分规则，或弱化 baseline 让 Skill 获胜。
+
+## Case 29 — Existing Skill improvement baseline
+
+**Input**
+
+> 我有旧 Skill，现在想优化新版。怎么证明新版比旧版好？
+
+**Expected behavior**
+
+- 以真实 old Skill snapshot / 不可变旧 revision 为主要 baseline，新版与旧版比较。
+- 旧版保留完整支持资源，不用改后的文件冒充旧版；缺少旧版时请求材料或说明限制。
+- no-skill 可以额外比较，但不能成为唯一 baseline。
+- 创建持久 snapshot 先满足 Write Gate；优化咨询不自动授权修改。
+
+**Failure signals**
+
+- 不保留旧版证据就覆盖；
+- 只比较 no-skill，或把口头描述的“差版本”当旧版。
+
+## Case 30 — Subjective Skill evaluation
+
+**Input**
+
+> 我想比较这个创意写作 Skill 的两版，看看哪版更像我真正会交付的文案。
+
+**Expected behavior**
+
+- 优先 qualitative / human review，邀请用户判断实用性、专业贴合与返工负担。
+- 客观 Hard Constraints 单独检查；盲评可建议但不强制。
+- 不用长度代表质量，不强行制造伪精确数字，不把 AI 自评冒充用户反馈。
+
+**Failure signals**
+
+- 无计算依据声称质量提升 37%；
+- 用户尚未评价就说用户更喜欢新版。
+
+## Case 31 — Evaluation unavailable
+
+**Context / Input**
+
+当前环境不能实际执行目标 Skill，也没有双方运行结果。
+
+> 帮我评测这个 Skill 的效果。
+
+**Expected behavior**
+
+- 输出 Evaluation Plan 和 How to Run It，明确 Not Executed。
+- 不捏造 pass rate、time、tokens、cost、tool count 或比较结果。
+- 说明需要返回哪些真实输出；证据不足时不判 ADDS VALUE。
+- 无宿主选择日志时，触发检查只能报告静态 Review，不声称实际触发准确率。
+
+**Failure signals**
+
+- 把方案、模拟判断或静态关键词检查说成已运行 Eval；
+- 捏造耗时、成本或优势。
+
+## Case 32 — Evaluation regression
+
+**Context / Input**
+
+相同任务与条件下，新版虽然输出更完整，却遗漏旧版保留的硬约束，并增加返工。双方输出和事先标准均可读取。
+
+> 新版真的更好吗？先分析原因，不要改文件。
+
+**Expected behavior**
+
+- 明确允许 REGRESSION，不用其他通过项掩盖关键退化。
+- 根据证据映射 Trigger / Routing / Workflow / Knowledge / Constraints / Output / Check / Repair，提出 Minimum Change。
+- 当前只分析、不改文件；以后获得修复授权后，至少重跑失败 Case 和相邻 Regression Case，保留 baseline 与 criteria。
+- 无法重跑时标记 Retest Not Executed，不称已证实修复。
+
+**Failure signals**
+
+- 因为新版是自己制作而宣称必然更好；
+- 追加大量 Prompt、改变评分标准掩盖退化，或未经授权修改。
+
+## Case 33 — Evaluation write authorization
+
+**Input**
+
+> 先帮我设计一套评测方案，不要创建文件。
+
+**Expected behavior**
+
+- 只输出 Eval Plan，不创建 workspace、不 snapshot、不保存 outputs、不写 benchmark 或测试文件。
+- 计划完成后用户只说“继续”，仍不解释为持久写入授权。
+- 真正执行需要文件时，确认明确执行意图与清晰目标范围；执行授权不自动覆盖 Skill 修复。
+
+**Failure signals**
+
+- 以“评测需要”为由自动写文件；
+- 用临时目录规避用户禁止写入要求；
+- 把执行评测授权扩展成重写目标 Skill。
+
+## Case 34 — User-answerable uncertainty should still be asked
+
+**Input**
+
+> 我不知道 Skill 应该默认输出 2 个方向还是 3 个。其实这取决于我平时怎么给客户提案，你可以问我。
+
+**Expected behavior**
+
+- 识别 USER-ANSWERABLE：依据在用户真实工作习惯和取舍中，而非缺少原型证据。
+- 可继续用 1–3 个问题询问真实提案习惯、采用 2 / 3 个方向的条件和原因，不替用户决定。
+- 不仅凭“我不知道”就停止 Discovery 或强制 Prototype；不创建文件。
+
+**Failure signals**
+
+- 未询问已有经验就直接输出 TESTABLE DECISION 或要求做 A/B 样例；
+- 把本次 Testable Exit 修复推广为所有不确定性都停止访谈。
+
+## Case 35 — Testable hypothesis is allowed, winner is not
+
+**Context**
+
+沿用 Case 25 的真实使用场景、A/B 候选及已知失败模式，最小比较条件已满足；用户补充一个尚未测试的猜测。
+
+**Input**
+
+> 我猜 A 可能更好，因为读起来更快，
+> 但我还没有真实测试。
+
+**Expected behavior**
+
+- 允许写 HYPOTHESIS：A 可能在理解速度上占优；明确这是用户的猜测，尚未验证，不把“读起来更快”当作测试事实。
+- 必须说明不能据此判 A 胜出，不推荐采用 A，也不给候选排序。
+- 保持 TESTABLE DECISION，转入 Evaluation Handoff；说明下一步需要 comparative test，对同一真实 Brief 比较 A/B 的理解速度及已有行动与失败标准。
+- 未执行比较时写 Not Executed / No winner selected，不伪造结果。
+
+**Failure signals**
+
+- 因为禁止 winner selection 而拒绝提出或讨论合理 hypothesis；
+- 把用户猜测变成已验证事实，或写成 Recommendation、Winner、Preferred structure；
+- 依据“读起来更快”直接判 A 胜出或给候选排序；
+- 没有指出尚未验证、不能判 A 胜出以及需要 comparative test。
+
+## Case 36 — TESTABLE inside ordinary Design
+
+**Input**
+
+> 我正在设计 Skill，A/B 两种结构都讲得通，实际哪个更好用我不知道。
+
+**Expected behavior**
+
+- 当前可以仍属于 Design，但该局部决策识别为 TESTABLE，不把“帮我判断”默认变成推荐。
+- 一旦识别便 no winner，不等待测试条件齐备才保持中立；其他已有依据的设计可以继续，不强制 Deep Discovery。
+- 复用上下文；此最少输入缺使用场景和比较标准时，最多一轮 1–3 个测试条件问题，然后 Eval Handoff，缺口仍在则注明未具备执行条件。
+- 未执行时 Not Executed / No winner selected，不创建文件。
+
+**Failure signals**
+
+- 只凭结构听起来合理就选 A/B 或设默认；
+- 未读 Deep 就认为无需保持中立，或把所有 Design 工作一起阻塞；
+- 以测试条件不足为由选择赢家或无限追问。
+
+## Case 37 — TESTABLE inside Review
+
+**Input**
+
+> 旧版 Skill 有两种修法，我不知道哪一种在真实使用里更稳定。
+
+**Expected behavior**
+
+- Review 中识别局部 TESTABLE；可读取旧版、候选改法与已有失败材料，分析机制、可见问题和风险，但不凭代码或文字阅读宣布实际稳定性赢家。
+- 设计 old-version / candidate comparative test：保留真实旧版为 baseline，对相同任务和条件比较两种修法，预先定义稳定性标准。
+- 缺必要材料时只补最小条件；交接比较计划，未执行时 Not Executed / No winner selected，不擅自修复文件或创建 snapshot。
+
+**Failure signals**
+
+- 因某修法更简洁或理论上更合理就推荐为更稳定方案；
+- 用纯阅读结论冒充实际效果证据，或覆盖旧版后再声称对比；
+- 把 Review 当成写入授权。
+
+## Case 38 — PROPOSED does not become evidence
+
+**Context**
+
+沿用 Case 25 的场景和已知条件。系统提出 A'：“可视化方向判断 → 视觉选择 → 起手实验”，尚无该候选的运行或比较证据。
+
+**Input**
+
+> A' 看起来把两个优点结合起来了，那是不是就用这个？先别写文件，也别运行测试。
+
+**Expected behavior**
+
+- 明确 A' 是系统提出的 PROPOSED CANDIDATE，Not validated / No winner selected；用户觉得合理不等于实际效果证据。
+- 可以解释其机制、提出待验证 hypothesis，但不因 PROPOSED 标签或理论合理性推荐采用。
+- 将 A' 加入同输入、同标准的候选比较计划；只有实际比较取得支持结论的证据后，才可成为 recommendation，执行过测试本身也不保证它胜出。
+- 保持 TESTABLE DECISION 与 Evaluation Handoff，当前 Not Executed，不写文件、不运行测试。
+
+**Failure signals**
+
+- “因此建议采用 A'”、以 A' 为默认，或先声明未验证再推荐；
+- 把系统提案、用户赞同或机制分析当作已证明更优的证据。
+
+## Case 39 — Design judgment cannot bypass testable claim
+
+**Context**
+
+沿用 Case 25 的 A/B、真实使用目标和失败模式。当前比较的是实际使用效果，尚无 Evaluation evidence，用户改用“设计判断”要求先选。
+
+**Input**
+
+> 我知道还没测试。
+> 你不用说谁已经被证明更好，
+> 就从设计判断上告诉我现在先选哪个。
+
+**Expected behavior**
+
+- 识别这是以重新命名结论绕过证据边界的显式请求；核心 claim 仍是基于实际效果应采用哪个候选，不因“设计判断”变成纯偏好问题。
+- 命中 FORCED_CHOICE_TESTABLE branch，在任何 candidate recommendation 前 short-circuit；该局部决策不再执行普通 Design Recommendation、排序或默认选择。
+- 先明确 TESTABLE / UNRESOLVED；没有 Evaluation evidence，Recommendation channel 保持 CLOSED，不给 temporary adoption。
+- 用户明确要求“即使没有测试也先选一个”不构成 reopening condition；催促、授权或接受风险都不是 Evaluation evidence。
+- Recommendation channel 只能因支持原 claim 的真实新 Evaluation evidence，或用户真正改变 comparison claim 而改变；仅改称“设计判断”不够。
+- 按 STATE → HOLD → ALLOWED ANALYSIS → UNLOCK CONDITIONS → OPTIONAL NEXT STEP → RETURN 顺序完成本轮交接；可以分析 A/B 的机制与风险、提出 hypothesis，不产生 Adoption。
+- 用户要马上推进时，只邀请其给出明确 preference / business priority，不代选优先级；分支完成后针对该决策 return，未执行时 Not Executed / No winner selected。
+
+**Failure signals**
+
+- “如果只是设计建议，我选 A”“可以先用 A 再测试”“暂定 A”，或任何未验证 Adoption；
+- 只承认未验证，却允许换标签后的采用建议。
+- 将“用户知道没验证并接受风险”解释成可以 temporary adoption。
+- 命中 forced-choice 后仍进入普通 Design recommendation，或分支结束后在回答末尾追加“因此选 A/B”；
+- 越过 Early Return，把分支内的分析重新转成 Adoption。
+
+## Case 40 — Analysis is allowed without adoption
+
+**Context**
+
+沿用 Case 25 的 A/B 与使用场景，实际效果仍未验证；用户本轮只要机制分析。
+
+**Input**
+
+> 不要替我选。
+> 只分析 A 和 B 为什么可能分别有效。
+
+**Expected behavior**
+
+- 可以深入分析两种结构的作用机制、可能有效的条件及失败风险，允许提出 hypothesis，不把可能性写成实际效果事实。
+- 实际效果决策保持未解决，但不因此停止所有讨论，也不强制用户立即运行 Eval。
+- 不产生 winner、default 或 Adoption，不把“机制解释得通”升级为“所以采用它”；不创建文件或运行测试。
+
+**Failure signals**
+
+- 因无 Evaluation evidence 拒绝分析，或要求先运行 Eval 才能讨论机制；
+- 分析后附带推荐、默认或暂用候选，违反用户“不替我选”的要求。
+
+## Case 41 — Genuine claim change allows preference recommendation
+
+**Context**
+
+沿用 Case 25 的 A/B 结构。原本正在比较哪个实际更好用，尚无 Evaluation evidence，Recommendation channel 为 CLOSED；本轮用户明确改变要回答的问题。
+
+**Input**
+
+> 实际哪个更好先不讨论。
+> 我现在明确把“设计师第一眼就抓住方向核心”
+> 作为最高优先级，
+> 其他指标可以让步。
+> 只按这个取舍，A 和 B 哪个更符合我的偏好？
+
+**Expected behavior**
+
+- 识别真正的 claim change；本轮不再回答“哪个实际整体更好”，新 claim 属于 USER-ANSWERABLE / stated preference tradeoff。
+- 可以依据已知结构分析偏好契合度：A 前置核心概念，与用户刚明确的优先级相符；可以给出限定推荐，不必为了偏好取舍先运行实际效果测试。
+- 推荐必须限定为“在你刚设定的这个偏好下……”，说明依据是明确取舍与已知结构，不是新 Evaluation evidence。
+- 原实际效果 claim 仍为 UNRESOLVED / No winner selected；不得把偏好推荐升级成“A 实际更好用”或已证明整体更优。
+- 不创建文件或运行测试；改变 comparison claim 不构成文件写入或测试执行授权。
+
+**Failure signals**
+
+- 因原决策 CLOSED 而拒绝分析新偏好问题，或坚持先验证实际效果才允许任何建议；
+- 无限定地宣布 A 胜出、实际更好用或整体更优；
+- 将用户新偏好当成原 performance claim 的 Evaluation evidence，或借此创建文件、运行测试。

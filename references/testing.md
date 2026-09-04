@@ -2,6 +2,12 @@
 
 测试的目标是验证 Skill 是否在不同条件下做出正确决策，而不是检查它是否重复某个固定句子。
 
+## Testing vs Evaluation
+
+行为测试（Testing）回答“是否按照设计做事”；效果评测（Evaluation）回答“用了 Skill 是否真的更好”。通过全部行为测试，不等于已经证明增益。
+
+只检查路由、格式、授权或约束时，继续使用本文件的 Input / Expected behavior / Failure signals。用户希望比较不用 Skill 或旧版结果、评价主观质量或优化触发效果时，按需阅读 [evaluation.md](evaluation.md)。不把普通 Review / Repair 自动升级成完整 Benchmark，也不在这里重复评测流程。报告应区分静态契约复查、实际行为运行和比较评测，未运行的项目不能记为通过。
+
 ## 建议场景
 
 按风险选择最小覆盖集：
