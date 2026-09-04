@@ -52,6 +52,16 @@ Build Your Own Skill 不会在你说“我想做一个 Skill”后立刻吐出�
 
 Build Your Own Skill 可以在支持文件操作的 Agent 中直接构建；在纯对话环境中则会输出完整的 Skill 设计和可复制文件内容。
 
+## 从和你最像的情况开始
+
+| 你现在的起点 | 推荐案例 |
+| --- | --- |
+| 我只有自己的工作经验 | [Case 01：Experience → Skill](case-studies/01-experience-to-skill/) |
+| 我已经有一条很长的 Prompt | [Case 02：Prompt → Skill](case-studies/02-prompt-to-skill/) |
+| 我已经有一个 Skill，但不好用 | [Case 03：Review → Repair](case-studies/03-review-and-repair/) |
+
+这三个案例均来自 Build Your Own Skill 的真实实机测试，不是为了教程临时编造的虚拟 Persona。
+
 ## 你会经历什么
 
 1. **Discovery**：从真实案例发现重复问题和隐性知识，而不是填写长问卷。
@@ -106,6 +116,11 @@ build-your-own-skill/
 │   └── brand-visual-director/
 │       ├── SKILL.md
 │       └── README.md
+├── case-studies/
+│   ├── README.md
+│   ├── 01-experience-to-skill/
+│   ├── 02-prompt-to-skill/
+│   └── 03-review-and-repair/
 └── tests/
     └── cases.md
 ```
@@ -113,7 +128,8 @@ build-your-own-skill/
 - `SKILL.md` 是精简的编排层，识别用户阶段并决定何时读取详细资料。
 - `references/` 保存 Discovery、设计、架构、测试和诊断方法。
 - `templates/` 提供可以复制并按真实经验改写的起点。
-- `examples/` 用完整但不过度复杂的案例解释结构。
+- `examples/` 展示最终 Skill 的结构示例。
+- `case-studies/` 展示真实用户从起点到发现、设计、构建或修复 Skill 的过程。
 - `tests/` 描述 Skill 自身应通过的行为场景。
 
 ## 推荐阅读
@@ -124,6 +140,10 @@ build-your-own-skill/
 - 想从最小文件开始：[`templates/BASIC_SKILL.md`](templates/BASIC_SKILL.md)
 - Skill 表现不稳定：[`references/debugging.md`](references/debugging.md)
 - 想看完整例子：[`examples/brand-visual-director/`](examples/brand-visual-director/)
+- 想看真实制作过程：[`case-studies/`](case-studies/)
+- 只有经验：[Case 01：Experience → Skill](case-studies/01-experience-to-skill/)
+- 已有长 Prompt：[Case 02：Prompt → Skill](case-studies/02-prompt-to-skill/)
+- 已有 Skill 想修：[Case 03：Review → Repair](case-studies/03-review-and-repair/)
 
 ## 设计原则
 
