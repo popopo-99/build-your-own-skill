@@ -4,13 +4,15 @@
 
 Build Your Own Skill 是一个帮助你从 0 制作自己 AI Skill 的 Skill。
 
-你不需要先会编程。告诉它你擅长什么、平时怎么工作、想重复解决什么问题，它会陪你把经验逐步整理成：
+> Agent Skill 是一组让 AI 在特定任务中重复遵循的方法、判断规则和质量检查。
 
-`你的经验 → 隐性知识 → Skill Canvas → Workflow → SKILL.md → Tests → V0.1`
+Build Your Own Skill 会把你的经验、Prompt、SOP 或现有 Skill，逐步整理成 AI 可以重复执行的方法：
+
+`你的经验 / Prompt / SOP → 找出真正的方法和判断 → 整理成可执行流程 → 做成 Skill → 测试和改进`
+
+你不需要先会编程。只需要告诉它你擅长什么、平时怎么工作，或者直接提供已有材料。
 
 > 不要只教 AI 一句话。把你解决问题的方法，教给它。
-
-当前版本是 **V0.2.0**：第一版经过实机测试与关键安全修复的 Skill Builder。
 
 ## 它和 Prompt Generator 有什么不同？
 
@@ -26,6 +28,88 @@ Build Your Own Skill 不会在你说“我想做一个 Skill”后立刻吐出�
 
 真正有价值的通常不是 AI 本来就知道的百科知识，而是你在实践中形成的方法。
 
+## 3 分钟安装并开始
+
+### 1. 在 Codex 中安装
+
+在 Codex 中调用 `$skill-installer`，并给它下面这段自然语言安装请求：
+
+```text
+$skill-installer
+
+Install the skill from:
+https://github.com/popopo-99/build-your-own-skill
+```
+
+推荐安装完整 Skill 目录，而不是只下载 `SKILL.md`；Build Your Own Skill 还会使用 references、templates 和 tests 等支持内容。
+
+详细安装、手动安装和排错见 [`INSTALL.md`](INSTALL.md)。
+
+### 2. 确认安装成功
+
+在 Codex CLI 或 IDE 中输入 `$`，或使用 `/skills`，查找 `build-your-own-skill`。如果刚安装后没有出现，再尝试重启 Codex。
+
+### 3. 复制第一句话
+
+```text
+$build-your-own-skill
+
+我想把自己的一套工作方法做成一个 Skill。
+先帮我做 Discovery，不要创建或修改任何文件。
+```
+
+如果你已经有 Prompt 或 `SKILL.md`，也可以直接粘贴，不需要从零开始。
+
+> Build Your Own Skill 默认可以先只做分析和设计。只有当你明确要求 Build / 创建文件时，才应进入文件写入阶段。
+
+## 从和你最像的情况开始
+
+| 你现在的起点 | 推荐案例 | 你可以这样开始 |
+| --- | --- | --- |
+| 我只有自己的工作经验 | [Case 01：Experience → Skill](case-studies/01-experience-to-skill/) | 描述一次你真实做过的工作 |
+| 我已经有一条很长的 Prompt | [Case 02：Prompt → Skill](case-studies/02-prompt-to-skill/) | 直接粘贴 Prompt，让它先分析 |
+| 我已经有一个 Skill，但不好用 | [Case 03：Review → Repair](case-studies/03-review-and-repair/) | 提供 `SKILL.md` 和具体失败表现 |
+
+> 不需要提前整理成标准格式。真实案例、旧 Prompt、SOP 或现有 Skill 都可以直接作为起点。
+
+这三个案例均来自 Build Your Own Skill 的真实实机测试，不是为了教程临时编造的虚拟 Persona。
+
+## 安装后，第一句话怎么说
+
+### 从经验开始
+
+```text
+$build-your-own-skill
+
+我经常负责 ______。
+我有自己的一些判断方法，但从来没有系统整理过。
+先帮我判断什么值得做成 Skill，不要创建文件。
+```
+
+### 从长 Prompt 开始
+
+```text
+$build-your-own-skill
+
+这是我长期使用的一条 Prompt。
+它效果不错，但越来越长、越来越难维护。
+先帮我分析哪些内容应该变成 Workflow、Rules 和 References，
+不要创建文件。
+
+[粘贴 Prompt]
+```
+
+### 从已有 Skill 开始
+
+```text
+$build-your-own-skill
+
+这是我现在的 SKILL.md，但它在实际使用中有一些问题。
+先帮我定位根因和最小修改方案，不要直接重写或修改文件。
+
+[粘贴 SKILL.md]
+```
+
 ## 谁适合使用？
 
 设计师、摄影师、导演、艺术家、创作者、文案、运营、产品经理、品牌从业者、HR、顾问、教师、研究者、程序员，以及任何拥有可复用经验的人。
@@ -33,34 +117,6 @@ Build Your Own Skill 不会在你说“我想做一个 Skill”后立刻吐出�
 完全不会代码也可以。你只需要用自然语言描述真实工作；YAML、工作流结构和测试设计由 Skill 帮你整理。
 
 如果你已经熟悉 Agent Skills，也可以直接提供现有 Prompt、SOP、`SKILL.md` 或架构要求，它会跳过不必要的新手步骤。
-
-## 如何开始
-
-从一句自然语言开始即可：
-
-> 我是摄影师，我想把自己的餐厅摄影方法做成一个 Skill。
-
-> 我经常帮别人做品牌视觉提案，我想把流程固定下来。
-
-> 这是我现在的 SKILL.md，帮我检查为什么结果不稳定。
-
-> 我有一套自己的小红书选题方法，怎么做成 Skill？
-
-> 我完全不会代码，也能做吗？
-
-如果想直接尝试，可把本仓库作为 Skill 提供给支持 Agent Skills 的 AI，然后描述你的想法或附上现有材料。核心入口是 [`SKILL.md`](SKILL.md)。
-
-Build Your Own Skill 可以在支持文件操作的 Agent 中直接构建；在纯对话环境中则会输出完整的 Skill 设计和可复制文件内容。
-
-## 从和你最像的情况开始
-
-| 你现在的起点 | 推荐案例 |
-| --- | --- |
-| 我只有自己的工作经验 | [Case 01：Experience → Skill](case-studies/01-experience-to-skill/) |
-| 我已经有一条很长的 Prompt | [Case 02：Prompt → Skill](case-studies/02-prompt-to-skill/) |
-| 我已经有一个 Skill，但不好用 | [Case 03：Review → Repair](case-studies/03-review-and-repair/) |
-
-这三个案例均来自 Build Your Own Skill 的真实实机测试，不是为了教程临时编造的虚拟 Persona。
 
 ## 你会经历什么
 
@@ -96,6 +152,7 @@ Build Your Own Skill 可以在支持文件操作的 Agent 中直接构建；在�
 build-your-own-skill/
 ├── SKILL.md
 ├── README.md
+├── INSTALL.md
 ├── CHANGELOG.md
 ├── AGENTS.md
 ├── references/
@@ -139,11 +196,7 @@ build-your-own-skill/
 - 想整理完整设计：[`templates/SKILL_CANVAS.md`](templates/SKILL_CANVAS.md)
 - 想从最小文件开始：[`templates/BASIC_SKILL.md`](templates/BASIC_SKILL.md)
 - Skill 表现不稳定：[`references/debugging.md`](references/debugging.md)
-- 想看完整例子：[`examples/brand-visual-director/`](examples/brand-visual-director/)
 - 想看真实制作过程：[`case-studies/`](case-studies/)
-- 只有经验：[Case 01：Experience → Skill](case-studies/01-experience-to-skill/)
-- 已有长 Prompt：[Case 02：Prompt → Skill](case-studies/02-prompt-to-skill/)
-- 已有 Skill 想修：[Case 03：Review → Repair](case-studies/03-review-and-repair/)
 
 ## 设计原则
 
@@ -161,6 +214,12 @@ build-your-own-skill/
 `STUDY → UNDERSTAND → MODIFY → EXTEND → CREDIT → SHARE`
 
 基于其他项目创建 Skill 时，请查看原项目 License，保留必要 Attribution，说明来源和修改，并遵守原 License。不要把改名字、换 Logo 当成真正的二次创作。
+
+## Version
+
+当前版本：**V0.2.0**
+
+版本记录见 [`CHANGELOG.md`](CHANGELOG.md)。
 
 ## License
 
